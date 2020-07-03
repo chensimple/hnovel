@@ -69,12 +69,14 @@ class txtAnal_T():
                 html = http_req.req().req(self.domain +
                                           domain[0:int(domain.rfind("/"))] +
                                           "/" + url)
+                print("/t请求"+ url)
                 self.soup = BeautifulSoup(html, "lxml")
             # 解析文本
             # 正文部分
             txt_sp = self.soup.select(".page-content")[0].select(
                 "p")[0].contents
             for i in txt_sp:
+                # print(len(i))
                 # 替换掉部分字符
                 if type(i).__name__ == 'NavigableString':
                     # 为正常文本
@@ -86,6 +88,7 @@ class txtAnal_T():
                         # 为图片标签
                         src = self.domain + i["src"]
                         # 解析图片 返回结果
+                        #print("解析图片标签"+src)
                         self.txt += self.img2txt(src)
                     except Exception as e:
                         # 出现意外标签

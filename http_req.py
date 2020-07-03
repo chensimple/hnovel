@@ -5,6 +5,9 @@
 
 import urllib.request
 import logging
+import socket
+# 设置超时时间为5s
+socket.setdefaulttimeout(5)
 
 logging.basicConfig(
     level=logging.ERROR,
@@ -61,6 +64,7 @@ class req():
                 response = urllib.request.urlopen(res, timeout=5.0)
                 data = response.read()
             except Exception as e:
+                print("重连接"+url+str(count)+"次")
                 count += 1
                 if count > 5:
                     logging.error(url + " 无法连接")
@@ -79,5 +83,18 @@ class req():
     # 下载图片到source文件夹
     @staticmethod
     def downloadImg(url):
+        # 解决下载图片超时卡死的问题
+        # 通过设置socket全局设置来使其抛出异常重新下载
         img_path = "source/" + url.split("/")[-1]
-        urllib.request.urlretrieve(url, img_path)
+        count = 1
+        while True:
+            try:
+                urllib.request.urlretrieve(url, img_path)
+            except:
+                print("下载超时"+url+"次数"+str(count))
+                if count<=5:
+                    continue
+                else:
+                    return False
+            break
+        return True

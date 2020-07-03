@@ -20,11 +20,16 @@ class record:
 
     # 先查询是否存在key，不存在就保存
     def Qsave(self, key, url):
+        #print("查看"+key)
         if key in self.record_l:
             # print(self.record_l[key], end="")
             return self.record_l[key]
         # 未检测到记录 下载图片 使用imgAnal类解析
-        http_req.req().downloadImg(url)
+        if http_req.req().downloadImg(url) is False:
+            # 多次下载失败
+            print("多次下载图片失败"+url)
+            return key
+        print("下载"+url)
         # 图片路径 source/xx.png
         img_path = "source/" + url.split("/")[-1]
         try:

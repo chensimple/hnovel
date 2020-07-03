@@ -1,7 +1,7 @@
 import xmlAnal
 import http_req
 
-domain = "http://www.diyibanzhu9.xyz"
+domain = "http://www.diyibanzhu9.in"
 source_url = domain+"/s.php"
 
 # 请求报文
@@ -16,7 +16,7 @@ def search(info):
 
 if __name__ == "__main__":
     # 搜索内容
-    search("古尔大陆")
+    search("星际后宫")
     # 发起post请求，获取网页源代码
     html = http_req.req().req_p(source_url, post_data)
     # 解析搜索结果，获取所有小说书名，介绍

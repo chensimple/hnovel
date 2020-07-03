@@ -42,7 +42,8 @@ class imgAnal:
         # QPS限制
         nowTime = int(round(time.time() * 1000))
         if nowTime - imgAnal.lastTime < 600:
-            time.sleep(int(500 - (nowTime - imgAnal.lastTime)))
+            # todo sleep参数调整
+            time.sleep(int(600 - (nowTime - imgAnal.lastTime)))
         client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
         imgAnal.lastTime = nowTime
         # end
