@@ -3,6 +3,8 @@ from aip import AipOcr
 from PIL import Image
 import numpy as np
 import time
+import math
+
 """ 你的 APPID AK SK """
 APP_ID = '18889232'
 API_KEY = 'K5oCCe3hDPZEzx3G1GrNtSg5'
@@ -35,6 +37,11 @@ class imgAnal:
         with open(filePath, 'rb') as fp:
             return fp.read()
 
+    @staticmethod
+    # 处理毫秒数进位秒数
+    def timesqr(s_time: int) -> int:
+        return math.ceil(s_time / 1000.0)
+
     # 处理图片后识别
     def rec2(self, filePath):
         self.Tjpg(filePath)
@@ -42,8 +49,7 @@ class imgAnal:
         # QPS限制
         nowTime = int(round(time.time() * 1000))
         if nowTime - imgAnal.lastTime < 600:
-            # todo sleep参数调整
-            time.sleep(int(600 - (nowTime - imgAnal.lastTime)))
+            time.sleep(imgAnal.timesqr(int(600 - (nowTime - imgAnal.lastTime))))
         client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
         imgAnal.lastTime = nowTime
         # end
@@ -64,5 +70,4 @@ class imgAnal:
         else:
             return res["words_result"]
 
-
-#print(imgAnal().rec("source/tun2tun2.jpg"))
+# print(imgAnal().rec("source/tun2tun2.jpg"))
